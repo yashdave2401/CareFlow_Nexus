@@ -14,16 +14,138 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      patients: {
+        Row: {
+          admission_time: string | null
+          age: number | null
+          assigned_bed_id: string | null
+          assigned_doctor_id: string | null
+          assigned_nurse_id: string | null
+          contact_phone: string | null
+          created_at: string | null
+          emergency_type: string
+          gender: string | null
+          id: string
+          medical_notes: string | null
+          patient_name: string
+          severity: string | null
+          status: string | null
+        }
+        Insert: {
+          admission_time?: string | null
+          age?: number | null
+          assigned_bed_id?: string | null
+          assigned_doctor_id?: string | null
+          assigned_nurse_id?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          emergency_type: string
+          gender?: string | null
+          id?: string
+          medical_notes?: string | null
+          patient_name: string
+          severity?: string | null
+          status?: string | null
+        }
+        Update: {
+          admission_time?: string | null
+          age?: number | null
+          assigned_bed_id?: string | null
+          assigned_doctor_id?: string | null
+          assigned_nurse_id?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          emergency_type?: string
+          gender?: string | null
+          id?: string
+          medical_notes?: string | null
+          patient_name?: string
+          severity?: string | null
+          status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "patients_assigned_doctor_id_fkey"
+            columns: ["assigned_doctor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "patients_assigned_nurse_id_fkey"
+            columns: ["assigned_nurse_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          full_name: string
+          id: string
+          phone: string | null
+          specialization: string | null
+          staff_id: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          full_name: string
+          id?: string
+          phone?: string | null
+          specialization?: string | null
+          staff_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          full_name?: string
+          id?: string
+          phone?: string | null
+          specialization?: string | null
+          staff_id?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "nurse" | "doctor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +272,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "nurse", "doctor"],
+    },
   },
 } as const
